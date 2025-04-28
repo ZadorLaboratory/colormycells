@@ -10,8 +10,11 @@ The package is designed to work with AnnData objects, commonly used in single-ce
 
 ## Installation
 
+For local development, clone the repository and install the package in editable mode:
 ```bash
-pip install colormycells
+git clone https://github.com/ZadorLaboratory/colormycells.git
+cd colormycells
+pip install -e .
 ```
 
 ## Dependencies
