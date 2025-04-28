@@ -42,6 +42,7 @@ class ColorParameters:
     unknown_color: Union[str, np.ndarray]
     deficiency: Optional[ColorDeficiency]
     severity: int
+    seed: Optional[int]
 
 
 def get_colormap(
@@ -51,12 +52,13 @@ def get_colormap(
     include_unknown: bool = False,
     unknown_color: str = 'w',
     deficiency: Optional[ColorDeficiency] = None,
-    severity: int = 0
+    severity: int = 0,
+    seed: Optional[int] = 42
 ) -> ColorDict:
     """
     Generate a colormap where perceptual distance equals cell type dissimilarity.
     
-    Creates a colormap that changes each time the function is run. The function uses
+    Creates a colormap that is deterministic when a seed is provided. The function uses
     pseudobulk expression profiles to calculate similarities between cell types, then 
     maps these similarities to perceptually uniform color distances.
     
@@ -77,6 +79,8 @@ def get_colormap(
         Type of color vision deficiency to simulate
     severity : int, default=0
         Severity of color vision deficiency (0-100)
+    seed : int or None, default=42
+        Random seed for reproducible colormaps. If None, a random colormap will be generated each time.
         
     Returns
     -------
@@ -105,6 +109,9 @@ def get_colormap(
     
     >>> # Loading directly from file
     >>> colors = get_colormap("my_data.h5ad", key="cell_type")
+    
+    >>> # Reproducible colormap with seed
+    >>> colors = get_colormap(adata, key="cell_type", seed=123)
     """
     # Validate parameters
     _validate_parameters(severity, deficiency)
@@ -116,14 +123,15 @@ def get_colormap(
         include_unknown=include_unknown,
         unknown_color=unknown_color,
         deficiency=deficiency,
-        severity=severity
+        severity=severity,
+        seed=seed
     )
     
     # Process data
     adata_obj = _load_adata(adata)
     labels, bulks = _calculate_pseudobulks(adata_obj, params)
     similarities, valid_labels = _compute_similarity_matrix(bulks, labels, params)
-    colors_rgb, colors3d = _generate_colors(similarities)
+    colors_rgb, colors3d = _generate_colors(similarities, params.seed)
     
     # Optional visualization
     if plot_colorspace:
@@ -328,7 +336,7 @@ def _compute_similarity_matrix(
         raise RuntimeError(f"Failed to compute correlation matrix: {e}") from e
 
 
-def _generate_colors(similarities: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+def _generate_colors(similarities: np.ndarray, seed: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
     """
     Generate perceptually uniform colors from similarity matrix.
     
@@ -336,6 +344,8 @@ def _generate_colors(similarities: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     ----------
     similarities : np.ndarray
         Similarity matrix between cell types
+    seed : int or None, default=None
+        Random seed for reproducible colormaps
         
     Returns
     -------
@@ -348,6 +358,10 @@ def _generate_colors(similarities: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         If color generation fails
     """
     try:
+        # Set random seed if provided
+        if seed is not None:
+            np.random.seed(seed)
+        
         # Create dissimilarity matrix
         dissimilarities = 1 - similarities
         
@@ -360,13 +374,19 @@ def _generate_colors(similarities: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         embed3 = manifold.MDS(
             n_components=3, 
             dissimilarity="precomputed",
-            random_state=42,
+            random_state=seed,  # Use the seed here
             n_init=10
         )
         colors3d = embed3.fit_transform(dissimilarities)
         
         # Apply random rotation for variety in colors
-        random_3d_rotation = special_ortho_group.rvs(3)
+        # Use the seed for reproducible rotation
+        if seed is not None:
+            random_state = np.random.RandomState(seed)
+            random_3d_rotation = special_ortho_group.rvs(3, random_state=random_state)
+        else:
+            random_3d_rotation = special_ortho_group.rvs(3)
+            
         colors3d_rotated = np.matmul(colors3d, random_3d_rotation)
         
         # Scale coordinates to fit in LUV color space

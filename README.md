@@ -69,6 +69,10 @@ sc.pl.umap(adata, color="cell_type", palette=colors)
 colors = get_colormap(adata, key="cell_type", plot_colorspace=True)
 # A 2D scatter plot will be displayed, and in Jupyter notebooks
 # an interactive 3D rotating visualization will also be shown
+
+# Create reproducible colormap with seed
+colors1 = get_colormap(adata, key="cell_type", seed=123)
+colors2 = get_colormap(adata, key="cell_type", seed=123)  # colors1 and colors2 will be identical
 ```
 
 You can also pass a file path directly:
@@ -90,6 +94,7 @@ colors = get_colormap("expression_matrix.csv", key="cell_type")
 - **unknown_color**: Color to use for "Unknown" category if not included (default: 'w')
 - **deficiency**: Type of color vision deficiency to simulate (options: None, "Deuteranomaly", "Protanomaly", "Tritanomaly", default: None)
 - **severity**: Severity of color vision deficiency (0-100, default: 0)
+- **seed**: Random seed for reproducible colormaps (default: 42, set to None for stochastic behavior)
 
 
 ## Our Approach: Biology-Driven Color Assignment
