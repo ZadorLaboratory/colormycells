@@ -1,20 +1,39 @@
 # ColorMyCells
 
-A Python package for creating perceptually uniform colormaps for cell types in single-cell data analysis.
+## A Biological Approach to Cell Type Visualization
 
-## Description
+`colormycells` is a specialized Python package that solves a common problem in single-cell analysis: **creating colormaps where the perceptual distance between colors meaningfully represents the biological similarity between cell types**.
 
-`colormycells` provides a way to create colormaps where the perceptual distance between colors is equal to the biological similarity between cell types. This makes visualizations more intuitive, as similar cell types appear in similar colors.
+## The Problem: Color Selection in Single-Cell Visualization
 
-The package is designed to work with AnnData objects, commonly used in single-cell analysis with packages like Scanpy, Seurat, or AnnData.
+Standard colormaps like `tab10` or `rainbow` aren't great when applied to single-cell data:
+
+- **Biological meaning is lost**: Default colormaps assign colors arbitrarily, with no relation to cell type similarity
+- **Perceptual imbalance**: Some colors jump out while others blend together, drawing attention to cell types for no biological reason
+- **Limited palette**: Most standard colormaps support 10-20 colors, but you may have hundreds of cell types
+
+<table>
+  <tr>
+    <td><img src="imgs/tab10.png" width="200"/></td>
+    <td><img src="imgs/color_my_cells.png" width="200"/></td>
+  </tr>
+  <tr>
+    <td><center>Standard Colormap</center></td>
+    <td><center>ColorMyCells</center></td>
+  </tr>
+</table>
+
 
 ## Installation
 
-For local development, clone the repository and install the package in editable mode:
 ```bash
-git clone https://github.com/ZadorLaboratory/colormycells.git
-cd colormycells
-pip install -e .
+pip install colormycells
+```
+
+For 3D visualization support (optional):
+
+```bash
+pip install colormycells[full]
 ```
 
 ## Dependencies
@@ -26,6 +45,10 @@ pip install -e .
 - scikit-learn
 - scipy
 - colour-science
+
+### Optional Dependencies (for 3D visualization)
+- pillow
+- ipython
 
 ## Usage
 
@@ -41,6 +64,21 @@ colors = get_colormap(adata, key="cell_type")
 
 # Use the colormap for plotting
 sc.pl.umap(adata, color="cell_type", palette=colors)
+
+# Visualize the color space with 2D and 3D plots
+colors = get_colormap(adata, key="cell_type", plot_colorspace=True)
+# A 2D scatter plot will be displayed, and in Jupyter notebooks
+# an interactive 3D rotating visualization will also be shown
+```
+
+You can also pass a file path directly:
+
+```python
+# Load directly from file
+colors = get_colormap("your_data.h5ad", key="cell_type")
+
+# Works with various file formats
+colors = get_colormap("expression_matrix.csv", key="cell_type")
 ```
 
 ## Parameters
@@ -53,11 +91,23 @@ sc.pl.umap(adata, color="cell_type", palette=colors)
 - **deficiency**: Type of color vision deficiency to simulate (options: None, "Deuteranomaly", "Protanomaly", "Tritanomaly", default: None)
 - **severity**: Severity of color vision deficiency (0-100, default: 0)
 
-## How It Works
 
-The function creates a similarity matrix between cell types based on their average gene expression profiles. It then uses Multidimensional Scaling (MDS) to embed this similarity in 3D space, which is mapped to the LUV color space. This ensures that cell types with similar expression profiles receive perceptually similar colors.
+## Our Approach: Biology-Driven Color Assignment
 
-The colormap changes each time you run the function, so if you need consistent colors across multiple visualizations, save the colormap dictionary.
+`colormycells` takes a fundamentally different approach:
+
+1. **Biological similarity drives color selection**: Similar cell types receive similar colors
+2. **Gene expression determines color**: We use the average expression profile of each cell type (pseudobulk) to measure cell type similarity
+3. **Perceptually uniform color space**: We map cell type relationships to the LUV color space, where perceptual distances are uniform
+4. **Intuitive visualization**: The result is a colormap where visual intuition aligns with biological reality
+
+The result is a colormap where:
+- Similar cell types appear in similar colors
+- Color distances reflect biological relationships
+- Visualizations become more intuitive to interpret
+
+![Description](imgs/cell_types_3d.gif)
+
 
 ## Note
 
@@ -65,4 +115,4 @@ Color vision deficiency simulation is currently not fully implemented.
 
 ## License
 
-GNU General Public License v3.0 (GPL-3.0)
+MIT
