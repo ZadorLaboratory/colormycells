@@ -1,0 +1,9 @@
+cff-version: 0.1.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "[Benjamin]"
+    given-names: "[Ari]"
+    orcid: "https://orcid.org/0000-0001-9241-9615" 
+title: "ColorMyCells: A Python package for creating perceptually uniform colormaps based on biological cell type similarity"
+version: 0.1.0
+doi: 10.5281/zenodo.15595324

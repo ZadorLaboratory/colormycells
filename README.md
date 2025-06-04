@@ -1,3 +1,6 @@
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.YOUR_DOI.svg)](https://doi.org/10.5281/zenodo.YOUR_DOI)
+
 # ColorMyCells
 
 ## A Biological Approach to Cell Type Visualization
@@ -109,10 +112,16 @@ The result is a colormap where:
 ![Description](imgs/cell_types_3d.gif)
 
 
-## Note
+### Note
 
 Color vision deficiency simulation is currently not fully implemented.
 
 ## License
 
-MIT
+GPL-3.0 License
+
+## How to Cite
+
+If you use ColorMyCells in your research, please cite:
+
+Ari Benjamon. (2025). ColorMyCells: A Biological Approach to Cell Type Visualization (Version 0.1.0). Zenodo. https://doi.org/10.5281/zenodo.15595324
