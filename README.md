@@ -129,4 +129,20 @@ GPL-3.0 License
 
 If you use ColorMyCells in your research, please cite:
 
-Ari Benjamon. (2025). ColorMyCells: A Biological Approach to Cell Type Visualization (Version 0.1.0). Zenodo. https://doi.org/10.5281/zenodo.15595324
+Ari Benjamin. (2025). ColorMyCells: A Biological Approach to Cell Type Visualization (Version 0.1.0). Zenodo. https://doi.org/10.5281/zenodo.15595324
+
+or the bibtex entry:
+
+```bibtex
+@software{colormycells2025,
+  author       = {Benjamin, Ari},
+  title        = {{ColorMyCells: A Python package for creating perceptually uniform colormaps based on biological cell type similarity}},
+  month        = jun,
+  year         = 2025,
+  publisher    = {Zenodo},
+  version      = {0.1.0},
+  doi          = {10.5281/zenodo.15595324},
+  url          = {https://doi.org/10.5281/zenodo.15595324},
+  note         = {Available at: https://github.com/ZadorLaboratory/colormycells}
+}
+```
