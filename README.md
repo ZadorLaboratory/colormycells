@@ -5,7 +5,7 @@
 
 ## A Biological Approach to Cell Type Visualization
 
-`colormycells` is a specialized Python package that solves a common problem in single-cell analysis: **creating colormaps where the perceptual distance between colors meaningfully represents the biological similarity between cell types**.
+`colormycells` is a Python package that solves a common problem in single-cell analysis: **creating colormaps where the perceptual distance between colors meaningfully represents the biological similarity between cell types**.
 
 ## The Problem: Color Selection in Single-Cell Visualization
 
@@ -129,14 +129,15 @@ GPL-3.0 License
 
 If you use ColorMyCells in your research, please cite:
 
-Ari Benjamin. (2025). ColorMyCells: A Biological Approach to Cell Type Visualization (Version 0.1.0). Zenodo. https://doi.org/10.5281/zenodo.15595324
+Ari Benjamin. (2025). ColorMyCells: A Python package for biologically faithful colormaps for cell type visualization. (Version 0.1.0). Zenodo. https://doi.org/10.5281/zenodo.15595324
 
 or the bibtex entry:
 
 ```bibtex
 @software{colormycells2025,
   author       = {Benjamin, Ari},
-  title        = {{ColorMyCells: A Python package for creating perceptually uniform colormaps based on biological cell type similarity}},
+  title        = {{ColorMyCells: A Python package for biologically
+                  faithful colormaps for cell type visualization}},
   month        = jun,
   year         = 2025,
   publisher    = {Zenodo},
