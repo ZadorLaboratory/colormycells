@@ -33,11 +33,7 @@ Standard colormaps like `tab10` or `rainbow` aren't great when applied to single
 pip install colormycells
 ```
 
-For 3D visualization support (optional):
-
-```bash
-pip install colormycells[full]
-```
+For 3D visualization support, also install `pillow` and `ipython`.
 
 ## Dependencies
 
