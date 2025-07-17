@@ -4,4 +4,4 @@ colormycells - A package for creating perceptually uniform colormaps for cell ty
 
 from .colormap import get_colormap
 
-__version__ = '0.1.0'
+__version__ = '0.1.3'

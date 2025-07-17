@@ -1,5 +1,5 @@
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.YOUR_DOI.svg)](https://doi.org/10.5281/zenodo.YOUR_DOI)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15595324.svg)](https://doi.org/10.5281/zenodo.15595324)
 
 # ColorMyCells
 
@@ -87,6 +87,16 @@ colors = get_colormap("your_data.h5ad", key="cell_type")
 # Works with various file formats
 colors = get_colormap("expression_matrix.csv", key="cell_type")
 ```
+
+### Try multiple seeds!
+
+Each seed produces a new random colormap.
+
+```python
+colors1 = get_colormap(adata, key="cell_type", seed=2)
+```
+
+![Description](imgs/all_maps.png)
 
 ## Parameters
 
